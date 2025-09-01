@@ -10,9 +10,22 @@ class FacilityController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $query = Facility::query();
+
+        if ($request->filled('type')) {
+            $query->where('facility_type', $request->type);
+        }
+        if ($request->filled('partner')) {
+            $query->where('partner_organization', 'LIKE', '%' . $request->partner . '%');
+        }
+        if ($request->filled('capability')) {
+            $query->where('capabilities', 'LIKE', '%' . $request->capability . '%');
+        }
+
+        $facilities = $query->paginate(10);
+        return view('facilities.index', compact('facilities'));
     }
 
     /**
