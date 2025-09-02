@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\Program;
+use App\Models\Facility;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -12,7 +14,8 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        //
+        $projects = Project::with(['program', 'facility'])->paginate(10);
+        return view('projects.index', compact('projects'));
     }
 
     /**
@@ -20,7 +23,9 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        $programs = Program::all();
+        $facilities = Facility::all();
+        return view('projects.create', compact('programs', 'facilities'));
     }
 
     /**
@@ -28,7 +33,24 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+        $data = $request->validate([
+            'program_id' => 'required|exists:programs,id',
+            'facility_id' => 'required|exists:facilities,id',
+            'title' => 'required|string|max:255',
+            'nature_of_project' => 'nullable|string',
+            'description' => 'nullable|string',
+            'innovation_focus' => 'nullable|string',
+            'prototype_stage' => 'nullable|string',
+            'testing_requirements' => 'nullable|string',
+            'commercialization_plan' => 'nullable|string',
+        ]);
+        
+        Project::create($data);
+        return redirect()->route('projects.index')->with('success', 'Project created successfully.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+        dd($e->errors()); // This will show you exactly what validation is failing
+        }
     }
 
     /**
@@ -36,7 +58,8 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        //
+        $project->load(['program', 'facility']);
+        return view('projects.show', compact('project'));
     }
 
     /**
@@ -44,7 +67,9 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        $programs = Program::all();
+        $facilities = Facility::all();
+        return view('projects.edit', compact('project', 'programs', 'facilities'));
     }
 
     /**
@@ -52,7 +77,20 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
-        //
+        $data = $request->validate([
+            'program_id' => 'required|exists:programs,program_id',
+            'facility_id' => 'required|exists:facilities,facility_id',
+            'title' => 'required|string|max:255',
+            'nature_of_project' => 'nullable|string',
+            'description' => 'nullable|string',
+            'innovation_focus' => 'nullable|string',
+            'prototype_stage' => 'nullable|string',
+            'testing_requirements' => 'nullable|string',
+            'commercialization_plan' => 'nullable|string',
+        ]);
+
+        $project->update($data);
+        return redirect()->route('projects.index')->with('success', 'Project updated successfully.');
     }
 
     /**
@@ -60,6 +98,7 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        $project->delete();
+        return redirect()->route('projects.index')->with('success', 'Project deleted successfully.');
     }
 }

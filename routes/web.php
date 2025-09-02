@@ -1,11 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProgramController;
+use App\Http\Controllers\FacilityController;
+use App\Http\Controllers\ProjectController;
 
 Route::get('/', function () {
     return view('welcome');
 });
-use App\Http\Controllers\ServiveController;
-Route::resource('services', ServiceController:: class);
-Route::resource('equipment', EquipmentController::class);
-
