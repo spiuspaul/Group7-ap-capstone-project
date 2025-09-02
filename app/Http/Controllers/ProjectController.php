@@ -33,9 +33,10 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
+        try {
         $data = $request->validate([
-            'program_id' => 'required|exists:programs,program_id',
-            'facility_id' => 'required|exists:facilities,facility_id',
+            'program_id' => 'required|exists:programs,id',
+            'facility_id' => 'required|exists:facilities,id',
             'title' => 'required|string|max:255',
             'nature_of_project' => 'nullable|string',
             'description' => 'nullable|string',
@@ -44,9 +45,12 @@ class ProjectController extends Controller
             'testing_requirements' => 'nullable|string',
             'commercialization_plan' => 'nullable|string',
         ]);
-
+        
         Project::create($data);
         return redirect()->route('projects.index')->with('success', 'Project created successfully.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+        dd($e->errors()); // This will show you exactly what validation is failing
+        }
     }
 
     /**
@@ -54,7 +58,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        $project->load(['program', 'facility', 'participants']);
+        $project->load(['program', 'facility']);
         return view('projects.show', compact('project'));
     }
 
