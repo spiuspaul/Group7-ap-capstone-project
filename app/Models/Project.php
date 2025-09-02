@@ -6,5 +6,32 @@ use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
-    //
+    protected $fillable = [
+        'program_id',
+        'facility_id',
+        'title',
+        'nature_of_project',
+        'description',
+        'innovation_focus',
+        'prototype_stage',
+        'testing_requirements',
+        'commercialization_plan',
+    ];
+
+    
+    public function program()
+    {
+        return $this->belongsTo(Program::class, 'program_id');
+    }
+
+    public function facility()
+    {
+        return $this->belongsTo(Facility::class, 'facility_id');
+    }
+
+    public function participants()
+    {
+        return $this->belongsToMany(User::class, 'project_user', 'project_id', 'user_id')
+                    ->withTimestamps();
+    }
 }
