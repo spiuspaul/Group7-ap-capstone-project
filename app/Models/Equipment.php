@@ -2,17 +2,18 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Equipment extends Model
 {
-    Use HasFactory;
+     use HasFactory;
 
-    protected $fillable = ['name','description', 'facility-id'];
-
-    public function facility()
-    {
-        return $this->belongsTo(Facility::class);
-        
-    }
+    // Mass assignable fields
+    protected $fillable = [
+        'name',
+        'type',
+        'description',
+        'quantity',
+    ];
 }
