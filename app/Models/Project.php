@@ -34,4 +34,9 @@ class Project extends Model
         return $this->belongsToMany(User::class, 'project_user', 'project_id', 'user_id')
                     ->withTimestamps();
     }
+
+    public function outcomes()
+    {
+        return $this->hasMany(Outcome::class, 'project_id');
+    }
 }
