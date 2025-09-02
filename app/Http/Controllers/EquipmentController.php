@@ -12,7 +12,8 @@ class EquipmentController extends Controller
      */
     public function index()
     {
-        //
+            $equipment= equipment::with('facility')->get();
+            return view('equipment.index', compact('equipments'));
     }
 
     /**
@@ -20,7 +21,8 @@ class EquipmentController extends Controller
      */
     public function create()
     {
-        //
+           $facilities = Facility::all();
+           return view('equipments.create', compact('facilities')); 
     }
 
     /**
@@ -28,7 +30,14 @@ class EquipmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+        'name' => 'required',
+        'facility_id' => 'required|exists:facilities,id',
+    ]);
+
+    equipment::create($request->all());
+
+    return redirect()->route('equipments.index')->with('success', 'equipment created successfully.');
     }
 
     /**
@@ -44,7 +53,8 @@ class EquipmentController extends Controller
      */
     public function edit(Equipment $equipment)
     {
-        //
+        $facilities = Facility::all();
+        return view('equipments.edit', compact('equipment', 'facilities'));
     }
 
     /**
@@ -52,7 +62,14 @@ class EquipmentController extends Controller
      */
     public function update(Request $request, Equipment $equipment)
     {
-        //
+        $request->validate([
+        'name' => 'required',
+        'facility_id' => 'required|exists:facilities,id',
+    ]);
+
+    $service->update($request->all());
+
+    return redirect()->route('equipment.index')->with('success', 'Equipment updated.');
     }
 
     /**
@@ -60,6 +77,8 @@ class EquipmentController extends Controller
      */
     public function destroy(Equipment $equipment)
     {
-        //
+         $equipment->delete();
+         return redirect()->route('equipments.index')->with('success', 'Equipment deleted.');
+
     }
 }
