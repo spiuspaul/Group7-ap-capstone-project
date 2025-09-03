@@ -62,13 +62,13 @@ class EquipmentController extends Controller
 
         $equipment->update($request->all());
 
-        return redirect()->route('equipments.index')->with('success', 'Equipment updated successfully.');
+        return redirect()->route('equipment.index')->with('success', 'Equipment updated successfully.');
     }
 
     // Delete equipment
     public function destroy(Equipment $equipment)
     {
         $equipment->delete();
-        return redirect()->route('equipments.index')->with('success', 'Equipment deleted successfully.');
+        return redirect()->route('equipment.index')->with('success', 'Equipment deleted successfully.');
     }
 }

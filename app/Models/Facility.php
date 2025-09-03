@@ -15,4 +15,14 @@ class Facility extends Model
         'facility_type',
         'capabilities',
     ];
+
+    public function equipments()
+    {
+        return $this->hasMany(Equipment::class);
+    }
+    
+    public function services()
+    {
+        return $this->hasMany(Service::class);
+    }
 }

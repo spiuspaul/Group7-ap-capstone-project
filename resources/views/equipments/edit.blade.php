@@ -12,26 +12,24 @@
             <input type="text" name="name" class="form-control" value="{{ $equipment->name }}" required>
         </div>
         <div class="mb-3">
-            <label>Type</label>
-            <input type="text" name="type" class="form-control" value="{{ $equipment->type }}">
+            <label>Capabilities</label>
+            <input type="text" name="capabilities" class="form-control" value="{{ $equipment->capabilities }}">
         </div>
         <div class="mb-3">
             <label>Description</label>
             <textarea name="description" class="form-control">{{ $equipment->description }}</textarea>
         </div>
         <div class="mb-3">
-            <label>Quantity</label>
-            <input type="number" name="quantity" class="form-control" value="{{ $equipment->quantity }}" required>
+            <label>Inventory Code</label>
+            <input type="text" name="inventory_code" class="form-control" value="{{ $equipment->inventory_code }}">
         </div>
         <div class="mb-3">
-            <label>Facility</label>
-            <select name="facility_id" class="form-control" required>
-                @foreach($facilities as $facility)
-                    <option value="{{ $facility->id }}" {{ $equipment->facility_id == $facility->id ? 'selected' : '' }}>
-                        {{ $facility->name }}
-                    </option>
-                @endforeach
-            </select>
+            <label>Usage Domain</label>
+            <input type="text" name="usage_domain" class="form-control" value="{{ $equipment->usage_domain }}">
+        </div>
+        <div class="mb-3">
+            <label>Support Phase</label>
+            <input type="text" name="support_phase" class="form-control" value="{{ $equipment->support_phase }}">
         </div>
         <button type="submit" class="btn btn-primary">Update</button>
     </form>

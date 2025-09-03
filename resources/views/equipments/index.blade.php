@@ -13,9 +13,6 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Type</th>
-                <th>Description</th>
-                <th>Quantity</th>
                 <th>Facility</th>
                 <th>Actions</th>
             </tr>
@@ -24,9 +21,6 @@
             @foreach($equipments as $equipment)
             <tr>
                 <td>{{ $equipment->name }}</td>
-                <td>{{ $equipment->type }}</td>
-                <td>{{ $equipment->description }}</td>
-                <td>{{ $equipment->quantity }}</td>
                 <td>{{ $equipment->facility->name ?? 'N/A' }}</td>
                 <td>
                     <a href="{{ route('equipments.edit', $equipment->id) }}" class="btn btn-warning btn-sm">Edit</a>
