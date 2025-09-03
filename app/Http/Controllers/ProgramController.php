@@ -12,7 +12,8 @@ class ProgramController extends Controller
      */
     public function index()
     {
-        //
+        $programs = Program::all();
+        return view('programs.index', compact('programs'));
     }
 
     /**
@@ -20,7 +21,7 @@ class ProgramController extends Controller
      */
     public function create()
     {
-        //
+        return view('programs.create');
     }
 
     /**
@@ -28,7 +29,17 @@ class ProgramController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'national_alignment' => 'nullable|string',
+            'focus_areas' => 'nullable|string',
+            'phases' => 'nullable|string',
+        ]);
+
+        Program::create($request->all());
+
+        return redirect()->route('programs.index')->with('success', 'Program created successfully.');
     }
 
     /**
@@ -36,7 +47,8 @@ class ProgramController extends Controller
      */
     public function show(Program $program)
     {
-        //
+        return view('programs.show', compact('program'));
+        
     }
 
     /**
@@ -44,7 +56,7 @@ class ProgramController extends Controller
      */
     public function edit(Program $program)
     {
-        //
+        return view('programs.edit', compact('program'));
     }
 
     /**
@@ -52,7 +64,17 @@ class ProgramController extends Controller
      */
     public function update(Request $request, Program $program)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'national_alignment' => 'nullable|string',
+            'focus_areas' => 'nullable|string',
+            'phases' => 'nullable|string',
+        ]);
+
+        $program->update($request->all());
+
+        return redirect()->route('programs.index')->with('success', 'Program updated successfully.');
     }
 
     /**
@@ -60,6 +82,14 @@ class ProgramController extends Controller
      */
     public function destroy(Program $program)
     {
-        //
+        $program->delete();
+        return redirect()->route('programs.index')->with('success', 'Program deleted successfully.');
+    }
+
+    // List projects under a program
+    public function projects(Program $program)
+    {
+        $projects = $program->projects; // comes from relationship
+        return view('programs.projects', compact('program', 'projects'));
     }
 }
