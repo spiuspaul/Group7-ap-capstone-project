@@ -28,12 +28,14 @@
                 <td>
                     <a href="{{ route('projects.show', $project) }}" class="btn btn-info btn-sm">View</a>
                     <a href="{{ route('projects.edit', $project) }}" class="btn btn-warning btn-sm">Edit</a>
+
                     <form action="{{ route('projects.destroy', $project) }}" method="POST" class="d-inline">
                         @csrf @method('DELETE')
                         <button type="submit" onclick="return confirm('Are you sure?')" class="btn btn-danger btn-sm">
                             Delete
                         </button>
                     </form>
+                    <a href="{{ route('projects.participants', $project) }}" class="btn btn-secondary btn-sm">Participants</a>
                 </td>
             </tr>
         @empty

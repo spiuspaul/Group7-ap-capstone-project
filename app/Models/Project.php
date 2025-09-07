@@ -31,7 +31,6 @@ class Project extends Model
 
     public function participants()
     {
-        return $this->belongsToMany(User::class, 'project_user', 'project_id', 'user_id')
-                    ->withTimestamps();
+        return $this->hasMany(Participant::class, 'project_id');
     }
 }

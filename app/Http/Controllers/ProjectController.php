@@ -101,4 +101,10 @@ class ProjectController extends Controller
         $project->delete();
         return redirect()->route('projects.index')->with('success', 'Project deleted successfully.');
     }
+
+    public function participants(Project $project)
+    {
+    $participants = $project->participants()->paginate(10);
+    return view('projects.participants', compact('project', 'participants'));
+    }
 }

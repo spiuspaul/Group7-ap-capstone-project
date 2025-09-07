@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Participant;
+use App\Models\Project;
 use Illuminate\Http\Request;
 
 class ParticipantController extends Controller
@@ -12,7 +13,8 @@ class ParticipantController extends Controller
      */
     public function index()
     {
-        //
+        $participants = Participant::with('project')->paginate(10); 
+        return view('participants.index', compact('participants'));
     }
 
     /**
@@ -20,7 +22,9 @@ class ParticipantController extends Controller
      */
     public function create()
     {
-        //
+        $projects = Project::all();
+        return view('participants.create', compact('projects'));
+
     }
 
     /**
@@ -28,7 +32,19 @@ class ParticipantController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'full_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:participants,email',
+            'affiliation' => 'nullable|string|max:255',
+            'specialization' => 'nullable|string|max:255',
+            'cross_skill_trained' => 'nullable|boolean',
+            'institution' => 'nullable|string|max:255',
+            'project_id' => 'required|exists:projects,id',
+        ]);
+
+        Participant::create($data);
+
+        return redirect()->route('participants.index')->with('success', 'Participant added successfully.');
     }
 
     /**
@@ -36,7 +52,8 @@ class ParticipantController extends Controller
      */
     public function show(Participant $participant)
     {
-        //
+        $participant->load('project');
+        return view('participants.show', compact('participant'));
     }
 
     /**
@@ -44,7 +61,8 @@ class ParticipantController extends Controller
      */
     public function edit(Participant $participant)
     {
-        //
+        $projects = Project::all();
+        return view('participants.edit', compact('participant', 'projects'));
     }
 
     /**
@@ -52,7 +70,19 @@ class ParticipantController extends Controller
      */
     public function update(Request $request, Participant $participant)
     {
-        //
+        $data = $request->validate([
+            'full_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:participants,email,' . $participant->id,
+            'affiliation' => 'nullable|string|max:255',
+            'specialization' => 'nullable|string|max:255',
+            'cross_skill_trained' => 'nullable|boolean',
+            'institution' => 'nullable|string|max:255',
+            'project_id' => 'required|exists:projects,id',
+        ]);
+
+        $participant->update($data);
+
+        return redirect()->route('participants.index')->with('success', 'Participant updated successfully.');
     }
 
     /**
@@ -60,6 +90,13 @@ class ParticipantController extends Controller
      */
     public function destroy(Participant $participant)
     {
-        //
+        $participant->delete();
+        return redirect()->route('participants.index')->with('success', 'Participant deleted successfully.');
+    }
+
+    public function projects(Participant $participant)
+    {
+        $projects = Project::where('project_id', $participant->project_id)->get();
+        return view('participants.projects', compact('participant', 'projects'));
     }
 }

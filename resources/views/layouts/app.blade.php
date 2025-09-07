@@ -18,6 +18,9 @@
                     <li class="nav-item"><a class="nav-link" href="{{ route('programs.index') }}">Programs</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('facilities.index') }}">Facilities</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('projects.index') }}">Projects</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('equipments.index') }}">Equipments</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('services.index') }}">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('participants.index') }}">Participants</a></li>
                 </ul>
             </div>
         </div>
