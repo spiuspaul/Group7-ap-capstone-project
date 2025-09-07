@@ -33,4 +33,9 @@ class Project extends Model
     {
         return $this->hasMany(Participant::class, 'project_id');
     }
+
+    public function outcomes()
+    {
+        return $this->hasMany(Outcome::class, 'project_id');
+    }
 }

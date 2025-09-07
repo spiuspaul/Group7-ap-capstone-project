@@ -6,6 +6,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\ParticipantController;
+use App\Http\Controllers\OutcomeController;
 
 Route::get('/', function () {
     return view('dashboard');
@@ -17,6 +18,7 @@ Route::resource('projects', ProjectController::class);
 Route::resource('services', ServiceController::class);
 Route::resource('equipments', EquipmentController::class);
 Route::resource('participants', ParticipantController::class);
+Route::resource('projects.outcomes', OutcomeController::class);
 
 Route::get('programs/{program}/projects', [ProgramController::class, 'projects'])->name('programs.projects');
 Route::get('facilities/{facility}/equipment', [FacilityController::class, 'equipment'])->name('facilities.equipment');

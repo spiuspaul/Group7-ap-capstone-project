@@ -70,7 +70,7 @@ class ParticipantController extends Controller
      */
     public function update(Request $request, Participant $participant)
     {
-        $data = $request->validate([
+        $data =$request->validate([
             'full_name' => 'required|string|max:255',
             'email' => 'required|email|unique:participants,email,' . $participant->id,
             'affiliation' => 'nullable|string|max:255',

@@ -36,6 +36,7 @@
                         </button>
                     </form>
                     <a href="{{ route('projects.participants', $project) }}" class="btn btn-secondary btn-sm">Participants</a>
+                    <a href="{{ route('projects.outcomes.index', ['project' => $project->id]) }}" class="btn btn-secondary btn-sm">View Outcomes</a>
                 </td>
             </tr>
         @empty
