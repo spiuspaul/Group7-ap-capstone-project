@@ -5,7 +5,7 @@
     <div class="row mb-5">
         <div class="col-12">
             <div class="bg-primary text-white rounded-3 p-5 text-center">
-                <h1 class="display-4 fw-bold mb-3">AP Capstone Dashboard</h1>
+                <h1 class="display-4 fw-bold mb-3">Welcome To Our Collaborative Platform</h1>
                 <p class="lead mb-0">Manage your programs, facilities, projects, and more</p>
             </div>
         </div>
