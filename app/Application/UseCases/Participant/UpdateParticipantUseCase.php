@@ -11,16 +11,16 @@ class UpdateParticipantUseCase
 {
     public function __construct(private ParticipantRepositoryInterface $repository) {}
 
-    public function execute(int $participantId, ParticipantDTO $dto): Participant
+    public function execute(int $id, ParticipantDTO $dto): Participant
     {
         // Email uniqueness (exclude current participant)
         $existing = $this->repository->findByEmail(strtolower($dto->email));
-        if ($existing && $existing->getParticipantId() !== $participantId) {
+        if ($existing && $existing->getParticipantId() !== $id) {
             throw new ParticipantException("Participant.Email already exists.");
         }
 
         $participant = new Participant(
-            participantId: $participantId,
+            id: $id,
             projectId: $dto->projectId,
             fullName: $dto->fullName,
             email: $dto->email,

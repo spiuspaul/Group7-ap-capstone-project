@@ -7,7 +7,7 @@ use App\Domain\Exceptions\ParticipantException;
 class Participant
 {
     public function __construct(
-        private ?int $participantId,
+        private ?int $id,
         private int $projectId,
         private string $fullName,
         private string $email,
@@ -39,7 +39,7 @@ class Participant
     }
 
     // Getters
-    public function getParticipantId(): ?int { return $this->participantId; }
+    public function getParticipantId(): ?int { return $this->id; }
     public function getProjectId(): int { return $this->projectId; }
     public function getFullName(): string { return $this->fullName; }
     public function getEmail(): string { return $this->email; }

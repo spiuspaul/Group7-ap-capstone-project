@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Application\UseCases;
+namespace App\Application\UseCases\Project;
 
 use App\Domain\Repositories\ProjectRepositoryInterface;
 
-class DeleteProject
+class DeleteProjectUseCase
 {
     public function __construct(
         private ProjectRepositoryInterface $repository

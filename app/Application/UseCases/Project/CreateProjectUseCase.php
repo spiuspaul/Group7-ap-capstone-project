@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Application\UseCases;
+namespace App\Application\UseCases\Project;
 
 use App\Domain\Entities\Project;
 use App\Domain\Repositories\ProjectRepositoryInterface;
 use App\Domain\Exceptions\ProjectException;
 use App\Application\DTOs\ProjectDTO;
 
-class CreateProject
+class CreateProjectUseCase
 {
     public function __construct(
         private ProjectRepositoryInterface $repository

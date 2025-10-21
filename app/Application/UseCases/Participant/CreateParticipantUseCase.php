@@ -20,7 +20,7 @@ class CreateParticipantUseCase
         }
 
         $participant = new Participant(
-            participantId: null,
+            id: null,
             projectId: $dto->projectId,
             fullName: $dto->fullName,
             email: $dto->email,
