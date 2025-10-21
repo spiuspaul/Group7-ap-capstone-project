@@ -21,16 +21,33 @@
             <div class="mb-3">
                 <label class="form-label">National Alignment</label>
                 <input type="text" name="national_alignment" class="form-control">
+
+                <!-- <select name="national_alignment[]" class="form-control" multiple>
+                    <option value="NDPIII">NDPIII</option>
+                    <option value="DigitalRoadmap2023_2028">Digital Roadmap 2023-2028</option>
+                    <option value="4IR">4IR</option>
+                </select>
+                <small class="text-muted">Hold Ctrl/Cmd to select multiple options</small> -->
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Focus Areas</label>
-                <input type="text" name="focus_areas" class="form-control">
+                <input type="text" name="focus_areas[]" class="form-control" placeholder="Enter focus area">
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Phases</label>
-                <input type="text" name="phases" class="form-control">
+                <div class="phase-item border p-3">
+                    <div class="mb-2">
+                        <input type="text" name="phases[0][name]" placeholder="Phase Name" class="form-control">
+                    </div>
+                    <div class="mb-2">
+                        <input type="text" name="phases[0][description]" placeholder="Phase Description" class="form-control">
+                    </div>
+                    <div class="mb-2">
+                        <input type="number" name="phases[0][duration]" placeholder="Duration (weeks)" class="form-control">
+                    </div>
+                </div>
             </div>
 
             <button type="submit" class="btn btn-success">Save</button>

@@ -3,12 +3,13 @@
 namespace App\Presentation\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Application\UseCases\CreateProgram;
-use App\Application\UseCases\UpdateProgram;
-use App\Application\UseCases\DeleteProgram;
+use App\Application\UseCases\Program\CreateProgramUseCase as CreateProgram;
+use App\Application\UseCases\Program\UpdateProgramUseCase as UpdateProgram;
+use App\Application\UseCases\Program\DeleteProgramUseCase as DeleteProgram;
 use App\Application\DTOs\ProgramDTO;
 use App\Domain\Exceptions\ProgramException;
 use App\Models\Program;
+use Illuminate\Support\Facades\Log;
 
 class ProgramController extends Controller
 {
@@ -20,8 +21,13 @@ class ProgramController extends Controller
 
     public function index()
     {
-        $programs = Program::all();
-        return view('programs.index', compact('programs'));
+        try {
+            $programs = Program::all();
+            return view('programs.index', compact('programs'));
+        } catch (\Exception $e) {
+            Log::error('Failed to fetch programs', ['error' => $e->getMessage()]);
+            return back()->withErrors(['error' => 'Failed to load programs']);
+        }
     }
 
     public function create()
@@ -31,22 +37,27 @@ class ProgramController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'national_alignment' => 'nullable|array',
-            'focus_areas' => 'nullable|array',
-            'phases' => 'nullable|array',
-        ]);
-
         try {
-            $dto = ProgramDTO::fromRequest($validated);
-            $this->createProgram->execute($dto);
-            
-            return redirect()->route('programs.index')
-                ->with('success', 'Program created successfully.');
+            $validated = $this->validateProgramRequest($request);
+            $dto = ProgramDTO::fromArray([
+                'name' => $validated['name'],
+                'description' => $validated['description'],
+                'nationalAlignment' => $validated['national_alignment'] ?? [],
+                'focusAreas' => $validated['focus_areas'] ?? [],
+                'phases' => $validated['phases'] ?? []
+            ]);
+            $program = $this->createProgram->execute($dto);
+            Log::info('Program created', ['program_id' => $program->getId()]);
+
+            return redirect()
+                ->route('programs.index')
+                ->with('success', 'Program created successfully');
         } catch (ProgramException $e) {
-            return back()->withErrors(['error' => $e->getMessage()])->withInput();
+            Log::warning('Program creation failed', ['error' => $e->getMessage()]);
+            return $this->handleProgramException($e);
+        } catch (\Exception $e) {
+            Log::error('Unexpected error in program creation', ['error' => $e->getMessage()]);
+            return $this->handleUnexpectedException($e);
         }
     }
 
@@ -62,29 +73,33 @@ class ProgramController extends Controller
 
     public function update(Request $request, Program $program)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'national_alignment' => 'nullable|array',
-            'focus_areas' => 'nullable|array',
-            'phases' => 'nullable|array',
-        ]);
-
         try {
-            $dto = ProgramDTO::fromRequest($validated);
-            $this->updateProgram->execute($program->program_id, $dto);
-            
-            return redirect()->route('programs.index')
-                ->with('success', 'Program updated successfully.');
+            $validated = $this->validateProgramRequest($request);
+            $dto = ProgramDTO::fromArray([
+                'name' => $validated['name'],
+                'description' => $validated['description'],
+                'nationalAlignment' => $validated['national_alignment'] ?? [],
+                'focusAreas' => $validated['focus_areas'] ?? [],
+                'phases' => $validated['phases'] ?? []
+            ]);
+
+            $this->updateProgram->execute($program->getId(), $dto);
+            Log::info('Program updated', ['program_id' => $program->getId()]);
+
+            return redirect()
+                ->route('programs.index')
+                ->with('success', 'Program updated successfully');
         } catch (ProgramException $e) {
-            return back()->withErrors(['error' => $e->getMessage()])->withInput();
+            return $this->handleProgramException($e);
+        } catch (\Exception $e) {
+            return $this->handleUnexpectedException($e);
         }
     }
 
     public function destroy(Program $program)
     {
         try {
-            $this->deleteProgram->execute($program->program_id);
+            $this->deleteProgram->execute($program->id);
             
             return redirect()->route('programs.index')
                 ->with('success', 'Program deleted successfully.');
@@ -97,5 +112,32 @@ class ProgramController extends Controller
     {
         $projects = $program->projects;
         return view('programs.projects', compact('program', 'projects'));
+    }
+
+    private function validateProgramRequest(Request $request): array
+    {
+        return $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'national_alignment' => 'required|string|in:NDPIII,DigitalRoadmap2023_2028,4IR',
+            'focus_areas' => 'nullable|array',
+            'focus_areas.*' => 'string',
+            'phases' => 'nullable|array',
+            'phases.*' => 'array:name,description,duration'
+        ]);
+    }
+
+    private function handleProgramException(ProgramException $e)
+    {
+        return back()
+            ->withErrors(['error' => $e->getMessage()])
+            ->withInput();
+    }
+
+    private function handleUnexpectedException(\Exception $e)
+    {
+        return back()
+            ->withErrors(['error' => 'An unexpected error occurred'])
+            ->withInput();
     }
 }

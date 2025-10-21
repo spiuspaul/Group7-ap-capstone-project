@@ -14,6 +14,12 @@ class RepositoryServiceProvider extends ServiceProvider
             ProgramRepositoryInterface::class,
             ProgramRepository::class
         );
+
+        // Facility Repository
+        $this->app->bind(
+            FacilityRepositoryInterface::class,
+            FacilityRepository::class
+        );
     }
 
     public function boot(): void

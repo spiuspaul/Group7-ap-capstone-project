@@ -18,7 +18,7 @@ class ProgramModel extends Model
     ];
 
     protected $casts = [
-        'national_alignment' => 'array',
+        // 'national_alignment' => 'array',
         'focus_areas' => 'array',
         'phases' => 'array',
     ];

@@ -1,6 +1,6 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
-// use App\Http\Controllers\ProgramController;
 use App\Presentation\Http\Controllers\ProgramController;
 use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\ProjectController;
@@ -13,15 +13,31 @@ Route::get('/', function () {
     return view('dashboard');
 })->name('dashboard');
 
+// Program Management Routes
 Route::resource('programs', ProgramController::class);
-Route::resource('facilities', FacilityController::class);
-Route::resource('projects', ProjectController::class);
-Route::resource('services', ServiceController::class);
-Route::resource('equipments', EquipmentController::class);
-Route::resource('participants', ParticipantController::class);
-Route::resource('projects.outcomes', OutcomeController::class);
+Route::get('programs/{program}/projects', [ProgramController::class, 'projects'])
+    ->name('programs.projects');
 
-Route::get('programs/{program}/projects', [ProgramController::class, 'projects'])->name('programs.projects');
-Route::get('facilities/{facility}/equipment', [FacilityController::class, 'equipment'])->name('facilities.equipment');
-Route::get('facilities/{facility}/services', [FacilityController::class, 'services'])->name('facilities.services');
-Route::get('projects/{project}/participants', [ProjectController::class, 'participants'])->name('projects.participants');
+// Facility Management Routes
+Route::resource('facilities', FacilityController::class);
+Route::get('facilities/{facility}/equipment', [FacilityController::class, 'equipment'])
+    ->name('facilities.equipment');
+Route::get('facilities/{facility}/services', [FacilityController::class, 'services'])
+    ->name('facilities.services');
+
+// Project Management Routes
+Route::resource('projects', ProjectController::class);
+Route::get('projects/{project}/participants', [ProjectController::class, 'participants'])
+    ->name('projects.participants');
+
+// Service Management Routes
+Route::resource('services', ServiceController::class);
+
+// Equipment Management Routes
+Route::resource('equipments', EquipmentController::class);
+
+// Participant Management Routes
+Route::resource('participants', ParticipantController::class);
+
+// Outcome Management Routes
+Route::resource('projects.outcomes', OutcomeController::class);

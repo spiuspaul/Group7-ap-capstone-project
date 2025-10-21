@@ -10,7 +10,7 @@ class Program
         private ?int $id,
         private string $name,
         private string $description,
-        private array $nationalAlignment = [],
+        private string $nationalAlignment,
         private array $focusAreas = [],
         private array $phases = []
     ) {
@@ -27,6 +27,18 @@ class Program
             throw new ProgramException("Program.Description is required.");
         }
 
+        // if (!is_array($this->nationalAlignment)) {
+        //     throw new ProgramException("Program.NationalAlignment must be an array.");
+        // }
+
+        if (!is_array($this->focusAreas)) {
+            throw new ProgramException("Program.FocusAreas must be an array.");
+        }
+
+        if (!is_array($this->phases)) {
+            throw new ProgramException("Program.Phases must be an array.");
+        }
+
         if (!empty($this->focusAreas) && empty($this->nationalAlignment)) {
             throw new ProgramException(
                 "Program.NationalAlignment must include at least one recognized alignment when FocusAreas are specified."
@@ -35,11 +47,9 @@ class Program
 
         if (!empty($this->nationalAlignment)) {
             $validTokens = ['NDPIII', 'DigitalRoadmap2023_2028', '4IR'];
-            $invalidTokens = array_diff($this->nationalAlignment, $validTokens);
-            
-            if (!empty($invalidTokens)) {
+            if (!in_array($this->nationalAlignment, $validTokens)) {
                 throw new ProgramException(
-                    "Program.NationalAlignment contains invalid tokens: " . implode(', ', $invalidTokens)
+                    "Program.NationalAlignment contains invalid token: " . $this->nationalAlignment
                 );
             }
         }
@@ -48,7 +58,12 @@ class Program
     public function getId(): ?int { return $this->id; }
     public function getName(): string { return $this->name; }
     public function getDescription(): string { return $this->description; }
-    public function getNationalAlignment(): array { return $this->nationalAlignment; }
+    public function getNationalAlignment(): string { return $this->nationalAlignment; }
     public function getFocusAreas(): array { return $this->focusAreas; }
     public function getPhases(): array { return $this->phases; }
 }
+
+
+
+
+

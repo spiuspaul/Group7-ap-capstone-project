@@ -21,12 +21,12 @@ class CreateProgramUseCase
         }
 
         $program = new Program(
-            id: null,
+            id: null,  // Let the repository assign the ID
             name: $dto->name,
             description: $dto->description,
-            nationalAlignment: $dto->nationalAlignment,
+            nationalAlignment: $dto->nationalAlignment,  // Remove the extra array wrapping
             focusAreas: $dto->focusAreas,
-            phases: $dto->phases
+            phases: $dto->phases    
         );
 
         return $this->repository->save($program);
