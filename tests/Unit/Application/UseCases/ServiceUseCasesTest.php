@@ -100,7 +100,7 @@ class ServiceUseCasesTest extends TestCase
     public function it_prevents_deleting_service_if_referenced()
     {
         $repository = $this->createMock(ServiceRepositoryInterface::class);
-        $repository->method('isReferencedByProject')->willReturn(true);
+        $repository->method('isReferencedByProjectCategory')->willReturn(true);
 
         $useCase = new DeleteServiceUseCase($repository);
 
@@ -114,7 +114,7 @@ class ServiceUseCasesTest extends TestCase
     public function it_deletes_service_successfully_if_not_referenced()
     {
         $repository = $this->createMock(ServiceRepositoryInterface::class);
-        $repository->method('isReferencedByProject')->willReturn(false);
+        $repository->method('isReferencedByProjectCategory')->willReturn(false);
         $repository->method('delete')->willReturn(true);
 
         $useCase = new DeleteServiceUseCase($repository);

@@ -79,7 +79,10 @@ class UpdateProgramTest extends TestCase
         $this->repository->save(new Program(
             id: null,
             name: 'Existing Program',
-            description: 'Original description'
+            description: 'Original description',
+            nationalAlignment: 'NDPIII',
+            focusAreas: ['IoT'],
+            phases: ['Planning']
         ));
     }
 
@@ -89,7 +92,10 @@ class UpdateProgramTest extends TestCase
         // Arrange
         $dto = new ProgramDTO(
             name: 'Updated Program',
-            description: 'Updated description'
+            description: 'Updated description',
+            nationalAlignment: 'NDPIII',
+            focusAreas: ['IoT'],
+            phases: ['Planning']
         );
 
         // Act
@@ -106,7 +112,10 @@ class UpdateProgramTest extends TestCase
         // Arrange
         $dto = new ProgramDTO(
             name: 'Existing Program',
-            description: 'Updated description'
+            description: 'Updated description',
+            nationalAlignment: 'NDPIII',
+            focusAreas: ['IoT'],
+            phases: ['Planning']
         );
 
         // Act
@@ -124,12 +133,18 @@ class UpdateProgramTest extends TestCase
         $this->repository->save(new Program(
             id: null,
             name: 'Another Program',
-            description: 'Another description'
+            description: 'Another description',
+            nationalAlignment: 'NDPIII',
+            focusAreas: ['IoT'],
+            phases: ['Planning']
         ));
         
         $dto = new ProgramDTO(
             name: 'Another Program',
-            description: 'Trying to use existing name'
+            description: 'Trying to use existing name',
+            nationalAlignment: 'NDPIII',
+            focusAreas: ['IoT'],
+            phases: ['Planning']
         );
 
         // Assert

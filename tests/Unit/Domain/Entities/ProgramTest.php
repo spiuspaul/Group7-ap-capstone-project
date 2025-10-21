@@ -17,7 +17,7 @@ class ProgramTest extends TestCase
             id: null,
             name: 'Test Program',
             description: 'Test Description',
-            nationalAlignment: ['NDPIII'],
+            nationalAlignment: 'NDPIII',
             focusAreas: ['IoT'],
             phases: ['Planning']
         );
@@ -38,7 +38,10 @@ class ProgramTest extends TestCase
         new Program(
             id: null,
             name: '',
-            description: 'Test Description'
+            description: 'Test Description',
+            nationalAlignment: 'NDPIII',
+            focusAreas: ['IoT'],
+            phases: ['Planning']
         );
     }
 
@@ -53,7 +56,10 @@ class ProgramTest extends TestCase
         new Program(
             id: null,
             name: 'Test Program',
-            description: ''
+            description: '',
+            nationalAlignment: 'NDPIII',
+            focusAreas: ['IoT'],
+            phases: ['Planning']
         );
     }
 
@@ -69,7 +75,7 @@ class ProgramTest extends TestCase
             id: null,
             name: 'Test Program',
             description: 'Test Description',
-            nationalAlignment: [],
+            nationalAlignment: '',
             focusAreas: ['IoT']
         );
     }
@@ -79,29 +85,45 @@ class ProgramTest extends TestCase
     {
         // Arrange & Assert
         $this->expectException(ProgramException::class);
-        $this->expectExceptionMessage('Program.NationalAlignment contains invalid tokens: InvalidToken');
+        $this->expectExceptionMessage('Program.NationalAlignment contains invalid token: InvalidToken');
 
         // Act
         new Program(
             id: null,
             name: 'Test Program',
             description: 'Test Description',
-            nationalAlignment: ['InvalidToken']
+            nationalAlignment: 'InvalidToken'
         );
     }
+
+    // #[Test]
+    // public function it_accepts_valid_national_alignment_tokens()
+    // {
+    //     // Arrange & Act
+    //     $program = new Program(
+    //         id: null,
+    //         name: 'Test Program',
+    //         description: 'Test Description',
+    //         nationalAlignment: ['NDPIII', 'DigitalRoadmap2023_2028', '4IR']
+    //     );
+
+    //     // Assert
+    //     $this->assertCount(3, $program->getNationalAlignment());
+    // }
 
     #[Test]
     public function it_accepts_valid_national_alignment_tokens()
     {
-        // Arrange & Act
-        $program = new Program(
-            id: null,
-            name: 'Test Program',
-            description: 'Test Description',
-            nationalAlignment: ['NDPIII', 'DigitalRoadmap2023_2028', '4IR']
-        );
+        $validTokens = ['NDPIII', 'DigitalRoadmap2023_2028', '4IR'];
 
-        // Assert
-        $this->assertCount(3, $program->getNationalAlignment());
+        foreach ($validTokens as $token) {
+            $program = new Program(
+                id: null,
+                name: 'Program ' . $token,
+                description: 'Test Description',
+                nationalAlignment: $token
+            );
+            $this->assertEquals($token, $program->getNationalAlignment());
+        }
     }
 }

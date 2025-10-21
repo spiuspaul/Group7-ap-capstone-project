@@ -78,7 +78,7 @@ class CreateProgramTest extends TestCase
         $dto = new ProgramDTO(
             name: 'Innovation Program',
             description: 'A test program',
-            nationalAlignment: ['NDPIII'],
+            nationalAlignment: 'NDPIII',
             focusAreas: ['IoT'],
             phases: ['Planning']
         );
@@ -99,12 +99,18 @@ class CreateProgramTest extends TestCase
         // Arrange
         $dto1 = new ProgramDTO(
             name: 'Duplicate Program',
-            description: 'First program'
+            description: 'First program',
+            nationalAlignment: 'NDPIII',
+            focusAreas: ['IoT'],
+            phases: ['Planning']
         );
         
         $dto2 = new ProgramDTO(
             name: 'Duplicate Program',
-            description: 'Second program'
+            description: 'Second program',
+            nationalAlignment: 'NDPIII',
+            focusAreas: ['IoT'],
+            phases: ['Planning']
         );
 
         // Act
@@ -123,12 +129,18 @@ class CreateProgramTest extends TestCase
         // Arrange
         $dto1 = new ProgramDTO(
             name: 'Test Program',
-            description: 'First program'
+            description: 'First program',
+            nationalAlignment: 'NDPIII',
+            focusAreas: ['IoT'],
+            phases: ['Planning']
         );
         
         $dto2 = new ProgramDTO(
             name: 'test program',
-            description: 'Second program'
+            description: 'Second program',
+            nationalAlignment: 'NDPIII',
+            focusAreas: ['IoT'],
+            phases: ['Planning']
         );
 
         // Act
